@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
 function App() {
+  const rows = 10, cols = 10;
+  const [grid, setGrid] = useState(
+    Array.from({ length: rows }, () => Array(cols).fill(false))
+  );
+
+  const toggleCell = (r, c) => {
+    const newGrid = grid.map((row, i) =>
+      row.map((cell, j) => (i === r && j === c ? !cell : cell))
+    );
+    setGrid(newGrid);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h2>Matrix Grid Visualization</h2>
+      <div className="grid">
+        {grid.map((row, r) =>
+          row.map((cell, c) => (
+            <div
+              key={`${r}-${c}`}
+              className={`cell ${cell ? "active" : ""}`}
+              onClick={() => toggleCell(r, c)}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 }
